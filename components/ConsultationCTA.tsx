@@ -8,6 +8,11 @@ type Contact = {
   phone: string
 }
 
+type Contact = {
+  fullName: string
+  phone: string
+}
+
 type Props = {
   patientId?: string
   patientName?: string
@@ -50,7 +55,33 @@ export default function ConsultationCTA({ patientId, patientName, salesStaff }: 
   const [modalOpen, setModalOpen] = useState(false)
 
   const mappedContacts = parseSalesStaff(salesStaff)
-  const contacts = mappedContacts.length > 0 ? mappedContacts : DEFAULT_CONTACTS
+const contacts = mappedContacts.length > 0 ? mappedContacts : DEFAULT_CONTACTS
+  function parseSalesStaff(input?: string | Contact[]): Contact[] {
+  if (!input) return []
+
+  if (Array.isArray(input)) {
+    return input.filter((x) => x.fullName || x.phone)
+  }
+
+  const raw = String(input).trim()
+  if (!raw) return []
+
+  return raw
+    .split('/')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const pieces = part.split(' - ')
+      const fullName = pieces[0]?.trim() || part
+      const phone = pieces[1]?.trim() || ''
+
+      return {
+        fullName,
+        phone,
+      }
+    })
+    .filter((x) => x.fullName)
+}
 
   return (
     <>
@@ -145,7 +176,8 @@ export default function ConsultationCTA({ patientId, patientName, salesStaff }: 
             {/* Contact cards */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 28 }}>
               {contacts.map((ct, i) => {
-                const phoneHref = ct.phone ? `tel:${ct.phone.replace(/\s/g, '')}` : undefined
+                const cleanPhone = ct.phone ? ct.phone.replace(/\s/g, '') : ''
+                const phoneHref = cleanPhone ? `tel:${cleanPhone}` : undefined
 
                 const cardContent = (
                   <>

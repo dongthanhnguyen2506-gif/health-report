@@ -53,8 +53,25 @@ export default function PatientPage({ params }: { params: { id: string } }) {
     return acc
   }, {})
 
-  const salesStaff = SALES_MAP[p.name] || []
-  const originalUrl = ORIGINAL_RESULTS[p.id]
+const normalizeKey = (value: unknown) =>
+  String(value || '')
+    .trim()
+    .replace(/\u200B/g, '')
+    .replace(/\uFEFF/g, '')
+    .replace(/\s+/g, ' ')
+
+const patientIdKey = normalizeKey(p.id)
+const patientNameKey = normalizeKey(p.name)
+
+const salesStaff =
+  SALES_MAP[patientIdKey] ||
+  SALES_MAP[patientNameKey] ||
+  ''
+
+const originalUrl =
+  ORIGINAL_RESULTS[patientIdKey] ||
+  ORIGINAL_RESULTS[patientNameKey] ||
+  ''
 
   const card: React.CSSProperties = {
     background: 'var(--card-bg)',
@@ -721,7 +738,11 @@ export default function PatientPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* ── CTA ── */}
-        <ConsultationCTA patientId={p.id} patientName={p.name} salesStaff={salesStaff} />
+        <ConsultationCTA
+          patientId={p.id}
+          patientName={p.name}
+          salesStaff={salesStaff}
+/>
 
         <div style={{ textAlign: 'center', padding: '8px 0', fontSize: 11, color: 'var(--gray-400)', lineHeight: 1.8 }}>
           <p>Ever Việt Nam × SHB · Phiếu này không phải chẩn đoán y khoa chính thức</p>
