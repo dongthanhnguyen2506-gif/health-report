@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import ConsultationBookingModal from './ConsultationBookingModal'
 
-
 type Contact = {
   fullName: string
   phone: string
@@ -51,33 +50,7 @@ export default function ConsultationCTA({ patientId, patientName, salesStaff }: 
   const [modalOpen, setModalOpen] = useState(false)
 
   const mappedContacts = parseSalesStaff(salesStaff)
-const contacts = mappedContacts.length > 0 ? mappedContacts : DEFAULT_CONTACTS
-  function parseSalesStaff(input?: string | Contact[]): Contact[] {
-  if (!input) return []
-
-  if (Array.isArray(input)) {
-    return input.filter((x) => x.fullName || x.phone)
-  }
-
-  const raw = String(input).trim()
-  if (!raw) return []
-
-  return raw
-    .split('/')
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .map((part) => {
-      const pieces = part.split(' - ')
-      const fullName = pieces[0]?.trim() || part
-      const phone = pieces[1]?.trim() || ''
-
-      return {
-        fullName,
-        phone,
-      }
-    })
-    .filter((x) => x.fullName)
-}
+  const contacts = mappedContacts.length > 0 ? mappedContacts : DEFAULT_CONTACTS
 
   return (
     <>
