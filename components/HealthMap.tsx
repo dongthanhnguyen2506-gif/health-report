@@ -25,9 +25,9 @@ function sc(s: string) {
 }
 
 export default function HealthMap({ sm }: { sm: SystemMap }) {
-  const BOX_W = 148  // wider boxes
-  const BOX_H = 28   // taller boxes
-  const FONT  = 12   // larger font
+  const BOX_W = 178  // wider boxes
+  const BOX_H = 36   // taller boxes
+  const FONT  = 14s   // larger font
 
   return (
     <svg viewBox="0 0 740 530" xmlns="http://www.w3.org/2000/svg"
@@ -135,12 +135,12 @@ export default function HealthMap({ sm }: { sm: SystemMap }) {
       <rect x="100" y="462" width="548" height="44" rx="10" fill="#F9FAFB" stroke="#E5E7EB" strokeWidth="0.8"/>
       {[
         { x:122, label:'Trong giới hạn tham chiếu', fill:'#1D7A6E' },
-        { x:298, label:'Cần trao đổi thêm với bác sĩ', fill:'#E24B4A' },
+        { x:298, label:'Cần trao đổi với bác sĩ', fill:'#E24B4A' },
         { x:478, label:'Chưa đủ dữ liệu', fill:'#9CA3AF' },
       ].map(lg => (
         <g key={lg.label}>
           <circle cx={lg.x} cy={481} r="6" fill={lg.fill}/>
-          <text x={lg.x + 12} y={485.5} fontFamily="Be Vietnam Pro, system-ui, sans-serif" fontSize="12" fill="#6B7280">{lg.label}</text>
+          <text x={lg.x + 14} y={486} fontFamily="Be Vietnam Pro, system-ui, sans-serif" fontSize="12" fill="#6B7280">{lg.label}</text>
         </g>
       ))}
     </svg>
