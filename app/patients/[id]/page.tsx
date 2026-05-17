@@ -6,6 +6,8 @@ import ReportActions from '@/components/ReportActions'
 import ConsultationCTA from '@/components/ConsultationCTA'
 import type { Metric } from '@/lib/types'
 import { getSafeMetric } from '@/lib/metric-utils'
+import { SALES_MAP } from '@/lib/sales-map'
+import { ORIGINAL_RESULTS } from '@/lib/original-results'
 
 export async function generateStaticParams() {
   return patients.map(p => ({ id: p.id }))
@@ -51,6 +53,9 @@ export default function PatientPage({ params }: { params: { id: string } }) {
     return acc
   }, {})
 
+  const salesStaff = SALES_MAP[p.name] || []
+  const originalUrl = ORIGINAL_RESULTS[p.id]
+
   const card: React.CSSProperties = {
     background: 'var(--card-bg)',
     border: 'var(--card-border)',
@@ -77,15 +82,19 @@ export default function PatientPage({ params }: { params: { id: string } }) {
     </div>
   )
 
+  const LOGOS = [
+    { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 72, href: 'https://evergroup.jp/' as string | null },
+    { src: '/logo-shb.png',  alt: 'SHB',           w: 54, href: null },
+  ]
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--page-bg)', overflowX: 'hidden' }}>
-      <ReportActions patientId={p.id} patientName={p.name} />
+      <ReportActions patientId={p.id} patientName={p.name} originalUrl={originalUrl} />
 
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '1.25rem 0.75rem 3rem' }}>
         {/* ── HEADER ── */}
         <div style={{ ...card }}>
           <div className="section-pad" style={{ padding: '22px 24px' }}>
-            {/* Logos */}
             <div
               style={{
                 display: 'flex',
@@ -97,10 +106,7 @@ export default function PatientPage({ params }: { params: { id: string } }) {
               }}
             >
               <div style={{ display: 'flex', gap: 8 }}>
-                {[
-                  { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 72 },
-                  { src: '/logo-shb.png', alt: 'SHB', w: 54 },
-                ].map(lg => (
+                {LOGOS.map(lg => (
                   <div
                     key={lg.alt}
                     style={{
@@ -116,7 +122,12 @@ export default function PatientPage({ params }: { params: { id: string } }) {
                       boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
                     }}
                   >
-                    <Image src={lg.src} alt={lg.alt} width={lg.w} height={24} style={{ objectFit: 'contain' }} />
+                    {lg.href
+                      ? <a href={lg.href} target="_blank" rel="noopener noreferrer" style={{ display: 'flex' }}>
+                          <Image src={lg.src} alt={lg.alt} width={lg.w} height={24} style={{ objectFit: 'contain' }} />
+                        </a>
+                      : <Image src={lg.src} alt={lg.alt} width={lg.w} height={24} style={{ objectFit: 'contain' }} />
+                    }
                   </div>
                 ))}
               </div>
@@ -626,15 +637,7 @@ export default function PatientPage({ params }: { params: { id: string } }) {
                               whiteSpace: 'nowrap',
                             }}
                           >
-                            <span
-                              style={{
-                                width: 5,
-                                height: 5,
-                                borderRadius: '50%',
-                                background: 'var(--teal)',
-                                display: 'inline-block',
-                              }}
-                            />
+                            <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--teal)', display: 'inline-block' }} />
                             BT
                           </span>
                         </div>
@@ -718,7 +721,7 @@ export default function PatientPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* ── CTA ── */}
-        <ConsultationCTA patientId={p.id} patientName={p.name} />
+        <ConsultationCTA patientId={p.id} patientName={p.name} salesStaff={salesStaff} />
 
         <div style={{ textAlign: 'center', padding: '8px 0', fontSize: 11, color: 'var(--gray-400)', lineHeight: 1.8 }}>
           <p>Ever Việt Nam × SHB · Phiếu này không phải chẩn đoán y khoa chính thức</p>

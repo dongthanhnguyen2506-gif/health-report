@@ -1,14 +1,22 @@
 'use client'
 import { useState } from 'react'
 import ConsultationBookingModal from './ConsultationBookingModal'
+import { SALES_MAP } from '@/lib/sales-map'
 
 type Props = {
   patientId?: string
   patientName?: string
+  salesStaff?: { fullName: string; phone: string }[]
 }
 
-export default function ConsultationCTA({ patientId, patientName }: Props) {
+const DEFAULT_CONTACTS = [
+  { fullName: 'Mr. Phúc Đoàn', phone: '0902 310 747' },
+  { fullName: 'Ms. Sương Vũ',  phone: '0785 957 488' },
+]
+
+export default function ConsultationCTA({ patientId, patientName, salesStaff }: Props) {
   const [modalOpen, setModalOpen] = useState(false)
+  const contacts = (salesStaff && salesStaff.length > 0) ? salesStaff : DEFAULT_CONTACTS
 
   return (
     <>
@@ -36,17 +44,16 @@ export default function ConsultationCTA({ patientId, patientName }: Props) {
 
             {/* Contact cards */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 28 }}>
-              {[
-                { role: 'Phụ trách 1', name: 'Mr. Phúc Đoàn', phone: '0902 310 747' },
-                { role: 'Phụ trách 2', name: 'Ms. Sương Vũ', phone: '0785 957 488' },
-              ].map(ct => (
-                <a key={ct.name} href={`tel:${ct.phone.replace(/\s/g,'')}`}
+              {contacts.map((ct, i) => (
+                <a key={i} href={`tel:${ct.phone.replace(/\s/g,'')}`}
                   style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 12, padding: '14px 18px', minWidth: 180, transition: 'background 0.15s', display: 'block' }}
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.14)'}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.08)'}
                 >
-                  <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--gold-m)', marginBottom: 3 }}>📞 {ct.role}</p>
-                  <p style={{ fontSize: 13.5, fontWeight: 600, color: 'white', marginBottom: 4 }}>{ct.name}</p>
+                  <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--gold-m)', marginBottom: 3 }}>
+                    📞 {i === 0 ? 'NVKD phụ trách' : 'Liên hệ ' + (i + 1)}
+                  </p>
+                  <p style={{ fontSize: 13.5, fontWeight: 600, color: 'white', marginBottom: 4 }}>{ct.fullName}</p>
                   <p style={{ fontFamily: 'var(--ff-serif)', fontSize: 17, fontWeight: 700, color: 'var(--gold-m)', letterSpacing: '0.02em' }}>{ct.phone}</p>
                 </a>
               ))}

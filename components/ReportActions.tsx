@@ -4,9 +4,10 @@ import { useState } from 'react'
 type Props = {
   patientId: string
   patientName: string
+  originalUrl?: string
 }
 
-export default function ReportActions({ patientId, patientName }: Props) {
+export default function ReportActions({ patientId, patientName, originalUrl }: Props) {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = async () => {
@@ -29,6 +30,12 @@ export default function ReportActions({ patientId, patientName }: Props) {
 
         {/* Action buttons */}
         <div style={{ display:'flex', gap:8, flexShrink:0 }}>
+          {originalUrl && (
+            <a href={originalUrl} target="_blank" rel="noopener noreferrer"
+              style={{ display:'flex', alignItems:'center', gap:5, padding:'7px 12px', borderRadius:99, fontSize:12, fontWeight:600, background:'rgba(184,150,62,0.2)', color:'var(--gold-m)', border:'none', cursor:'pointer', whiteSpace:'nowrap', textDecoration:'none' }}>
+              📄 KQXN gốc
+            </a>
+          )}
           <button onClick={handleCopy}
             style={{ display:'flex', alignItems:'center', gap:5, padding:'7px 12px', borderRadius:99, fontSize:12, fontWeight:600, background:copied?'rgba(29,122,110,0.3)':'rgba(255,255,255,0.1)', color:copied?'#5DCAA5':'rgba(255,255,255,0.8)', border:'none', cursor:'pointer', whiteSpace:'nowrap' }}>
             {copied ? '✓ Đã sao chép' : '🔗 Sao chép link'}
