@@ -3,10 +3,6 @@
 import { useState } from 'react'
 import ConsultationBookingModal from './ConsultationBookingModal'
 
-type Contact = {
-  fullName: string
-  phone: string
-}
 
 type Contact = {
   fullName: string
