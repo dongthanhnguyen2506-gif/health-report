@@ -1,17 +1,17 @@
 import type { SystemMap } from '@/lib/types'
 
 // ── Layout ─────────────────────────────────────────────────────────────────
-const VW = 900      // viewBox width
-const VH = 625      // viewBox height
-const BOX_W  = 172  // label box width
-const BOX_H  = 44   // box height — tall enough for 2 lines
-const GAP    = 52   // vertical gap between boxes
-const START_Y = 162 // y of first box row
-const LX     = 18   // left box x origin
-const RX     = VW - 18 - BOX_W   // right box x origin = 710
-const L_CONN = 312  // connector line → left body edge
-const R_CONN = 590  // connector line → right body edge
-const FONT   = 13.5 // label font size
+const VW = 900
+const VH = 720      // tăng chiều cao viewBox để có thêm chỗ
+const BOX_W  = 172
+const BOX_H  = 52   // tăng box cao hơn để 2 dòng không bị cắt
+const GAP    = 60   // tăng khoảng cách giữa các box
+const START_Y = 148 // đẩy lên trên để tận dụng không gian
+const LX     = 18
+const RX     = VW - 18 - BOX_W
+const L_CONN = 312
+const R_CONN = 590
+const FONT   = 13.5
 
 const SYSTEMS_LEFT: { key: string; l1: string; l2: string }[] = [
   { key:'Huyet hoc',   l1:'Huyết học',         l2:'' },
@@ -51,8 +51,8 @@ function Box({
   const cy  = y + BOX_H / 2
   const dotX = x + 20
   const tx   = x + 36
-  const y1 = l2 ? y + BOX_H/2 - 1      : y + BOX_H/2 + FONT * 0.36
-  const y2 = y + BOX_H/2 + FONT + 2
+  const y1 = l2 ? y + BOX_H/2 - FONT*0.6 : y + BOX_H/2 + FONT * 0.36
+  const y2 = y + BOX_H/2 + FONT * 0.8
 
   const lx1 = isLeft ? x + BOX_W : x
   const lx2 = isLeft ? L_CONN    : R_CONN
@@ -238,7 +238,7 @@ export default function HealthMap({ sm }: { sm: SystemMap }) {
       ))}
 
       {/* Legend */}
-      <rect x="70" y="542" width="762" height="54" rx="12"
+       <rect x="70" y="640" width="762" height="54" rx="12"
         fill="#F9FAFB" stroke="#E5E7EB" strokeWidth="1"/>
       {[
         { x:100, label:'Trong giới hạn tham chiếu', fill:'#1D7A6E' },
@@ -246,8 +246,8 @@ export default function HealthMap({ sm }: { sm: SystemMap }) {
         { x:582, label:'Chưa đủ dữ liệu',            fill:'#9CA3AF' },
       ].map(lg => (
         <g key={lg.label}>
-          <circle cx={lg.x} cy={569} r="9" fill={lg.fill}/>
-          <text x={lg.x + 18} y={574}
+         <circle cx={lg.x} cy={667} r="9" fill={lg.fill}/>
+          <text x={lg.x + 18} y={672}
             fontFamily="Be Vietnam Pro,system-ui,sans-serif"
             fontSize="14" fill="#4B5563">{lg.label}</text>
         </g>
