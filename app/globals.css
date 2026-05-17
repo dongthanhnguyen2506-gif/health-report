@@ -74,8 +74,51 @@ img { max-width: 100%; height: auto; }
 /* Print */
 @media print {
   .no-print { display: none !important; }
-  body { background: white !important; overflow: visible !important; }
-  @page { size: A4 portrait; margin: 10mm 12mm; }
+
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  body {
+    background: white !important;
+    font-size: 12px !important;
+  }
+
+  /* Reset padding trang */
+  .report-outer, [style*="maxWidth"] {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Card không bị cắt giữa trang */
+  [style*="borderRadius"], .card {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Section không bị cắt */
+  [style*="marginBottom"] {
+    break-inside: avoid !important;
+  }
+
+  /* Mỗi khối chính sang trang mới nếu cần */
+  h1, h2, h3 {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* Bảng không bị cắt */
+  table { break-inside: avoid !important; }
+  tr    { break-inside: avoid !important; }
+
+  /* Giữ màu nền khi in */
+  [style*="background"] { -webkit-print-color-adjust: exact !important; }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
 }
 
 /* ── MOBILE ────────────────────────────────────────────────────────────────── */
