@@ -26,228 +26,256 @@ export default function ReportActions({
 
   return (
     <>
-      <div className="report-actions">
-        <div className="report-actions-inner">
-          <div className="report-title">
-            <div className="report-eyebrow">Phiếu diễn giải</div>
-            <div className="report-name">{patientName}</div>
+      <header className="report-fixed-header">
+        <div className="report-fixed-inner">
+          <div className="report-fixed-title">
+            <div className="report-fixed-eyebrow">Phiếu diễn giải</div>
+            <div className="report-fixed-name">{patientName}</div>
           </div>
 
-          <div className="report-buttons">
+          <div className="report-fixed-actions">
             {originalUrl && (
               <a
-                className="report-btn report-btn-original"
                 href={originalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="report-action-btn report-action-original"
                 aria-label="Mở kết quả xét nghiệm gốc"
               >
                 <span className="btn-icon">📄</span>
-                <span className="btn-text">KQXN gốc</span>
+                <span className="btn-label">KQXN gốc</span>
               </a>
             )}
 
             <button
-              className="report-btn report-btn-copy"
               type="button"
               onClick={handleCopyLink}
-              aria-label="Sao chép link phiếu"
+              className="report-action-btn report-action-copy"
+              aria-label="Sao chép link"
             >
               <span className="btn-icon">🔗</span>
-              <span className="btn-text">Sao chép link</span>
+              <span className="btn-label">Sao chép link</span>
             </button>
 
             <button
-              className="report-btn report-btn-print"
               type="button"
               onClick={handlePrint}
-              aria-label="In hoặc lưu PDF"
+              className="report-action-btn report-action-print"
+              aria-label="In hoặc tải PDF"
             >
               <span className="btn-icon">🖨️</span>
-              <span className="btn-text">In / PDF</span>
+              <span className="btn-label">In / PDF</span>
             </button>
           </div>
         </div>
-      </div>
+      </header>
+
+      {/* Spacer để nội dung phiếu không bị header fixed che */}
+      <div className="report-fixed-spacer" />
 
       <style jsx>{`
-        .report-actions {
-          position: sticky;
+        .report-fixed-header {
+          position: fixed;
           top: 0;
-          z-index: 9999;
+          left: 0;
+          right: 0;
+          width: 100%;
+          z-index: 999999;
           background: var(--navy);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow: 0 8px 24px rgba(15, 30, 53, 0.18);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          box-shadow: 0 8px 24px rgba(15, 30, 53, 0.22);
         }
 
-        .report-actions-inner {
+        .report-fixed-inner {
+          width: 100%;
           max-width: 1180px;
           margin: 0 auto;
-          min-height: 64px;
-          padding: 10px 16px;
+          min-height: 76px;
+          padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+          box-sizing: border-box;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 12px;
+          gap: 16px;
         }
 
-        .report-title {
-          min-width: 0;
+        .report-fixed-title {
           flex: 1;
+          min-width: 0;
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: 3px;
         }
 
-        .report-eyebrow {
-          color: rgba(255, 255, 255, 0.55);
+        .report-fixed-eyebrow {
+          color: rgba(255, 255, 255, 0.48);
           font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.12em;
+          font-weight: 800;
+          letter-spacing: 0.15em;
           text-transform: uppercase;
           line-height: 1.2;
         }
 
-        .report-name {
+        .report-fixed-name {
           color: white;
-          font-size: clamp(13px, 2.8vw, 18px);
-          font-weight: 800;
+          font-size: clamp(15px, 3vw, 20px);
+          font-weight: 900;
           letter-spacing: 0.03em;
+          line-height: 1.2;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          line-height: 1.25;
         }
 
-        .report-buttons {
+        .report-fixed-actions {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 10px;
           flex-shrink: 0;
         }
 
-        .report-btn {
-          height: 40px;
-          padding: 0 16px;
+        .report-action-btn {
+          height: 42px;
+          padding: 0 18px;
           border-radius: 999px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 7px;
-          font-size: 14px;
-          font-weight: 800;
-          white-space: nowrap;
+          gap: 8px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
           text-decoration: none;
           cursor: pointer;
-          border: 1px solid rgba(255, 255, 255, 0.12);
+          white-space: nowrap;
+          font-size: 14px;
+          font-weight: 850;
+          box-sizing: border-box;
           -webkit-tap-highlight-color: transparent;
         }
 
-        .report-btn-original {
-          background: rgba(255, 255, 255, 0.1);
-          color: var(--gold-m);
-          border-color: rgba(255, 255, 255, 0.3);
-          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-        }
-
-        .report-btn-copy {
+        .report-action-original,
+        .report-action-copy {
           background: rgba(255, 255, 255, 0.1);
           color: white;
         }
 
-        .report-btn-print {
+        .report-action-original {
+          color: var(--gold-m);
+          border-color: rgba(255, 255, 255, 0.28);
+          box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+        }
+
+        .report-action-print {
           background: var(--gold-m);
           color: var(--navy);
-          font-weight: 900;
-          box-shadow: 0 8px 20px rgba(184, 150, 62, 0.28);
+          border-color: rgba(255, 255, 255, 0.12);
+          font-weight: 950;
+          box-shadow: 0 10px 24px rgba(184, 150, 62, 0.28);
         }
 
         .btn-icon {
           font-size: 15px;
           line-height: 1;
+          flex-shrink: 0;
         }
 
-        .btn-text {
+        .btn-label {
           line-height: 1;
         }
 
-        @media (max-width: 720px) {
-          .report-actions-inner {
-            min-height: 58px;
-            padding: 8px 10px;
+        .report-fixed-spacer {
+          height: calc(76px + env(safe-area-inset-top, 0px));
+          flex-shrink: 0;
+        }
+
+        @media (max-width: 760px) {
+          .report-fixed-inner {
+            min-height: 68px;
+            padding: calc(8px + env(safe-area-inset-top, 0px)) 10px 8px;
             gap: 8px;
           }
 
-          .report-eyebrow {
+          .report-fixed-eyebrow {
             display: none;
           }
 
-          .report-name {
-            font-size: 13px;
-            max-width: 42vw;
+          .report-fixed-name {
+            font-size: 14px;
+            max-width: 40vw;
           }
 
-          .report-buttons {
+          .report-fixed-actions {
             gap: 6px;
           }
 
-          .report-btn {
-            height: 38px;
-            padding: 0 11px;
+          .report-action-btn {
+            height: 40px;
+            padding: 0 12px;
             font-size: 12px;
             gap: 5px;
           }
 
-          .btn-icon {
-            font-size: 14px;
+          .report-fixed-spacer {
+            height: calc(68px + env(safe-area-inset-top, 0px));
           }
         }
 
         @media (max-width: 540px) {
-          .report-actions-inner {
-            min-height: 56px;
+          .report-fixed-inner {
+            min-height: 62px;
+            padding: calc(8px + env(safe-area-inset-top, 0px)) 8px 8px;
           }
 
-          .report-name {
-            max-width: 34vw;
-            font-size: 12.5px;
+          .report-fixed-name {
+            max-width: 36vw;
+            font-size: 13px;
           }
 
-          .report-btn {
-            width: 38px;
-            min-width: 38px;
+          .report-action-btn {
+            width: 40px;
+            min-width: 40px;
+            height: 40px;
             padding: 0;
           }
 
-          .btn-text {
+          .btn-label {
             display: none;
+          }
+
+          .report-fixed-spacer {
+            height: calc(62px + env(safe-area-inset-top, 0px));
           }
         }
 
         @media (max-width: 380px) {
-          .report-actions-inner {
-            padding: 7px 8px;
+          .report-fixed-inner {
+            min-height: 58px;
+            padding: calc(7px + env(safe-area-inset-top, 0px)) 7px 7px;
             gap: 6px;
           }
 
-          .report-name {
-            max-width: 30vw;
+          .report-fixed-name {
+            max-width: 32vw;
             font-size: 12px;
           }
 
-          .report-buttons {
+          .report-fixed-actions {
             gap: 5px;
           }
 
-          .report-btn {
+          .report-action-btn {
             width: 36px;
             min-width: 36px;
             height: 36px;
           }
+
+          .report-fixed-spacer {
+            height: calc(58px + env(safe-area-inset-top, 0px));
+          }
         }
 
         @media print {
-          .report-actions {
+          .report-fixed-header,
+          .report-fixed-spacer {
             display: none !important;
           }
         }
