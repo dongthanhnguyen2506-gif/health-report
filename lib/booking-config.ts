@@ -30,7 +30,6 @@ function parseDateInput(dateStr: string): Date | null {
   if (!dateStr) return null
 
   const [year, month, day] = dateStr.split('-').map(Number)
-
   if (!year || !month || !day) return null
 
   return new Date(year, month - 1, day)
@@ -69,6 +68,41 @@ export function isDateAllowed(dateStr: string): boolean {
   const isAllowedWeekday = BOOKING_CONFIG.allowedWeekdays.includes(weekday)
 
   return isWithinRange && isAllowedWeekday
+}
+
+export function getAllowedDateOptions() {
+  const today = getToday()
+  const endOfMonth = getEndOfCurrentMonth()
+
+  const dates: { value: string; label: string; subLabel: string }[] = []
+  const cursor = new Date(today)
+
+  while (cursor <= endOfMonth) {
+    const weekday = cursor.getDay()
+
+    if (BOOKING_CONFIG.allowedWeekdays.includes(weekday)) {
+      const value = toDateInputValue(cursor)
+
+      const weekdayLabel = new Intl.DateTimeFormat('vi-VN', {
+        weekday: 'long',
+      }).format(cursor)
+
+      const dateLabel = new Intl.DateTimeFormat('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+      }).format(cursor)
+
+      dates.push({
+        value,
+        label: dateLabel,
+        subLabel: weekdayLabel,
+      })
+    }
+
+    cursor.setDate(cursor.getDate() + 1)
+  }
+
+  return dates
 }
 
 export function getAllowedDatesText(): string {

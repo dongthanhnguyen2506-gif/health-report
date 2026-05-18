@@ -3,10 +3,9 @@
 import { useState } from 'react'
 import {
   BOOKING_CONFIG,
-  getMinDate,
-  getMaxDate,
   isDateAllowed,
   getAllowedDatesText,
+  getAllowedDateOptions,
 } from '@/lib/booking-config'
 
 type Props = {
@@ -57,7 +56,12 @@ const LOCATIONS = [
   },
 ]
 
-export default function ConsultationBookingModal({ patientId, patientName, open, onClose }: Props) {
+export default function ConsultationBookingModal({
+  patientId,
+  patientName,
+  open,
+  onClose,
+}: Props) {
   const [date, setDate] = useState('')
   const [timeSlot, setTimeSlot] = useState('')
   const [location, setLocation] = useState('')
@@ -75,17 +79,6 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
     setError('')
   }
 
-  const handleDateChange = (val: string) => {
-    setDate(val)
-
-    if (val && !isDateAllowed(val)) {
-      setError('Vui lòng chọn ngày tư vấn trong khoảng 19–22/05/2026.')
-      return
-    }
-
-    setError('')
-  }
-
   const handleSubmit = async () => {
     if (!location) {
       setError('Vui lòng chọn địa điểm tư vấn.')
@@ -98,7 +91,7 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
     }
 
     if (!isDateAllowed(date)) {
-      setError('Vui lòng chọn ngày tư vấn trong khoảng 19–22/05/2026.')
+      setError(getAllowedDatesText())
       return
     }
 
@@ -149,6 +142,8 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
     onClose()
   }
 
+  const allowedDateOptions = getAllowedDateOptions()
+
   return (
     <div
       onClick={(e) => {
@@ -183,12 +178,37 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
           <div style={{ width: 40, height: 4, borderRadius: 2, background: '#e5e7eb' }} />
         </div>
 
-        <div style={{ padding: '16px 24px 14px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '16px 24px 14px',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
+        >
           <div>
-            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 4 }}>
+            <p
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--gold)',
+                marginBottom: 4,
+              }}
+            >
               Tư vấn chuyên sâu
             </p>
-            <h2 style={{ fontFamily: 'var(--ff-serif)', fontSize: 24, fontWeight: 600, color: 'var(--navy)', lineHeight: 1.25 }}>
+
+            <h2
+              style={{
+                fontFamily: 'var(--ff-serif)',
+                fontSize: 24,
+                fontWeight: 600,
+                color: 'var(--navy)',
+                lineHeight: 1.25,
+              }}
+            >
               {submitted ? 'Đã ghi nhận yêu cầu ✓' : 'Chọn thời gian & địa điểm'}
             </h2>
           </div>
@@ -220,11 +240,31 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
         <div style={{ padding: '18px 24px 36px' }}>
           {submitted ? (
             <div style={{ textAlign: 'center' }}>
-              <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'var(--teal-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 32 }}>
+              <div
+                style={{
+                  width: 72,
+                  height: 72,
+                  borderRadius: '50%',
+                  background: 'var(--teal-l)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  fontSize: 32,
+                }}
+              >
                 ✓
               </div>
 
-              <h3 style={{ fontFamily: 'var(--ff-serif)', fontSize: 22, fontWeight: 600, color: 'var(--navy)', marginBottom: 10 }}>
+              <h3
+                style={{
+                  fontFamily: 'var(--ff-serif)',
+                  fontSize: 22,
+                  fontWeight: 600,
+                  color: 'var(--navy)',
+                  marginBottom: 10,
+                }}
+              >
                 Chúng tôi đã ghi nhận thông tin
               </h3>
 
@@ -236,8 +276,26 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                 Đội ngũ tư vấn sẽ xác nhận lịch hẹn dựa trên thông tin Quý khách đã chọn.
               </p>
 
-              <div style={{ background: '#f9fafb', borderRadius: 14, padding: '16px 18px', marginBottom: 24, textAlign: 'left', border: '1px solid #e5e7eb' }}>
-                <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: '#9ca3af', marginBottom: 12 }}>
+              <div
+                style={{
+                  background: '#f9fafb',
+                  borderRadius: 14,
+                  padding: '16px 18px',
+                  marginBottom: 24,
+                  textAlign: 'left',
+                  border: '1px solid #e5e7eb',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.10em',
+                    color: '#9ca3af',
+                    marginBottom: 12,
+                  }}
+                >
                   Chi tiết đã gửi
                 </p>
 
@@ -251,7 +309,9 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                   .filter(Boolean)
                   .map(([k, v]) => (
                     <div key={String(k)} style={{ display: 'flex', gap: 8, marginBottom: 7 }}>
-                      <span style={{ fontSize: 14, color: 'var(--navy)', fontWeight: 500, minWidth: 120 }}>{k}</span>
+                      <span style={{ fontSize: 14, color: 'var(--navy)', fontWeight: 500, minWidth: 120 }}>
+                        {k}
+                      </span>
                       <span style={{ fontSize: 14, color: 'var(--gray-600)' }}>{v}</span>
                     </div>
                   ))}
@@ -297,14 +357,35 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                 </div>
               )}
 
+              {/* LOCATION */}
               <div style={{ marginBottom: 22 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--gray-600)', marginBottom: 10 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.10em',
+                    color: 'var(--gray-600)',
+                    marginBottom: 10,
+                  }}
+                >
                   Địa điểm tư vấn <span style={{ color: 'var(--red)' }}>*</span>
                 </label>
 
                 {LOCATIONS.map((group) => (
                   <div key={group.group} style={{ marginBottom: 14 }}>
-                    <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--gold)', marginBottom: 8, paddingLeft: 2 }}>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        color: 'var(--gold)',
+                        marginBottom: 8,
+                        paddingLeft: 2,
+                      }}
+                    >
                       {group.group}
                     </p>
 
@@ -315,6 +396,7 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                         return (
                           <button
                             key={loc.label}
+                            type="button"
                             onClick={() => handleLocationSelect(loc.label, loc.address)}
                             style={{
                               padding: '14px 16px',
@@ -327,12 +409,25 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                               touchAction: 'manipulation',
                             }}
                           >
-                            <p style={{ fontSize: 15, fontWeight: 600, color: active ? 'white' : 'var(--navy)', marginBottom: loc.address ? 3 : 0 }}>
+                            <p
+                              style={{
+                                fontSize: 15,
+                                fontWeight: 600,
+                                color: active ? 'white' : 'var(--navy)',
+                                marginBottom: loc.address ? 3 : 0,
+                              }}
+                            >
                               {loc.label}
                             </p>
 
                             {loc.address && (
-                              <p style={{ fontSize: 13, color: active ? 'rgba(255,255,255,0.7)' : 'var(--gray-500)', lineHeight: 1.4 }}>
+                              <p
+                                style={{
+                                  fontSize: 13,
+                                  color: active ? 'rgba(255,255,255,0.7)' : 'var(--gray-500)',
+                                  lineHeight: 1.4,
+                                }}
+                              >
                                 {loc.address}
                               </p>
                             )}
@@ -344,37 +439,107 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                 ))}
               </div>
 
+              {/* DATE */}
               <div style={{ marginBottom: 20 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--gray-600)', marginBottom: 10 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.10em',
+                    color: 'var(--gray-600)',
+                    marginBottom: 10,
+                  }}
+                >
                   Ngày mong muốn <span style={{ color: 'var(--red)' }}>*</span>
                 </label>
 
-                <input
-                  type="date"
-                  min={getMinDate()}
-                  max={getMaxDate()}
-                  value={date}
-                  onChange={(e) => handleDateChange(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '15px 16px',
-                    borderRadius: 12,
-                    border: `2px solid ${error && !date ? 'var(--red)' : '#e5e7eb'}`,
-                    fontSize: 16,
-                    color: 'var(--black)',
-                    background: '#f9fafb',
-                    outline: 'none',
-                    WebkitAppearance: 'none',
-                  }}
-                />
+                {allowedDateOptions.length > 0 ? (
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    {allowedDateOptions.map((d) => {
+                      const active = date === d.value
 
-                <p style={{ fontSize: 12, color: 'var(--gray-400)', marginTop: 6 }}>
+                      return (
+                        <button
+                          key={d.value}
+                          type="button"
+                          onClick={() => {
+                            setDate(d.value)
+                            setError('')
+                          }}
+                          style={{
+                            padding: '13px 12px',
+                            borderRadius: 12,
+                            border: `2px solid ${active ? 'var(--navy)' : '#e5e7eb'}`,
+                            background: active ? 'var(--navy)' : 'white',
+                            color: active ? 'white' : 'var(--gray-700)',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s',
+                            textAlign: 'center',
+                            touchAction: 'manipulation',
+                            minHeight: 58,
+                          }}
+                        >
+                          <p
+                            style={{
+                              fontSize: 15,
+                              fontWeight: 700,
+                              marginBottom: 3,
+                              color: active ? 'white' : 'var(--navy)',
+                            }}
+                          >
+                            {d.label}
+                          </p>
+
+                          <p
+                            style={{
+                              fontSize: 12,
+                              color: active ? 'rgba(255,255,255,0.72)' : 'var(--gray-400)',
+                              textTransform: 'capitalize',
+                            }}
+                          >
+                            {d.subLabel}
+                          </p>
+                        </button>
+                      )
+                    })}
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      padding: '13px 16px',
+                      borderRadius: 12,
+                      background: 'var(--red-l)',
+                      color: 'var(--red)',
+                      fontSize: 14,
+                      display: 'flex',
+                      gap: 8,
+                    }}
+                  >
+                    <span>⚠</span>
+                    <span>Hiện chưa có ngày tư vấn phù hợp trong tháng này.</span>
+                  </div>
+                )}
+
+                <p style={{ fontSize: 12, color: 'var(--gray-400)', marginTop: 8 }}>
                   {getAllowedDatesText()}
                 </p>
               </div>
 
+              {/* TIME SLOTS */}
               <div style={{ marginBottom: 20 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--gray-600)', marginBottom: 10 }}>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.10em',
+                    color: 'var(--gray-600)',
+                    marginBottom: 10,
+                  }}
+                >
                   Khung giờ <span style={{ color: 'var(--red)' }}>*</span>
                 </label>
 
@@ -382,6 +547,7 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                   {BOOKING_CONFIG.timeSlots.map((slot) => (
                     <button
                       key={slot}
+                      type="button"
                       onClick={() => {
                         setTimeSlot(slot)
                         setError('')
@@ -407,9 +573,23 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                 </div>
               </div>
 
+              {/* NOTE */}
               <div style={{ marginBottom: error ? 14 : 22 }}>
-                <label style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.10em', color: 'var(--gray-600)', marginBottom: 10 }}>
-                  Ghi chú <span style={{ fontSize: 12, color: 'var(--gray-400)', fontWeight: 400, textTransform: 'none' }}>(nếu có)</span>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.10em',
+                    color: 'var(--gray-600)',
+                    marginBottom: 10,
+                  }}
+                >
+                  Ghi chú{' '}
+                  <span style={{ fontSize: 12, color: 'var(--gray-400)', fontWeight: 400, textTransform: 'none' }}>
+                    (nếu có)
+                  </span>
                 </label>
 
                 <textarea
@@ -433,7 +613,18 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
               </div>
 
               {error && (
-                <div style={{ padding: '13px 16px', borderRadius: 12, background: 'var(--red-l)', color: 'var(--red)', fontSize: 14, marginBottom: 18, display: 'flex', gap: 8 }}>
+                <div
+                  style={{
+                    padding: '13px 16px',
+                    borderRadius: 12,
+                    background: 'var(--red-l)',
+                    color: 'var(--red)',
+                    fontSize: 14,
+                    marginBottom: 18,
+                    display: 'flex',
+                    gap: 8,
+                  }}
+                >
                   <span>⚠</span>
                   <span>{error}</span>
                 </div>
@@ -441,6 +632,7 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
 
               <div style={{ display: 'flex', gap: 12 }}>
                 <button
+                  type="button"
                   onClick={handleClose}
                   style={{
                     flex: 1,
@@ -459,6 +651,7 @@ export default function ConsultationBookingModal({ patientId, patientName, open,
                 </button>
 
                 <button
+                  type="button"
                   onClick={handleSubmit}
                   disabled={loading}
                   style={{
