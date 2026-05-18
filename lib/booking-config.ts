@@ -2,15 +2,17 @@
 // Chỉnh file này để thay đổi ngày và giờ cho phép đặt lịch
 
 export const BOOKING_CONFIG = {
-  // Số ngày tối thiểu kể từ hôm nay (0 = có thể đặt ngay hôm nay)
-  minDaysFromToday: 1,
+  // Chỉ cho phép khách hàng đặt lịch trong các ngày này
+  allowedDates: [
+    '2026-05-19',
+    '2026-05-20',
+    '2026-05-21',
+    '2026-05-22',
+  ],
 
-  // Số ngày tối đa có thể đặt trước (30 = đặt trong vòng 30 ngày tới)
-  maxDaysFromToday: 30,
-
-  // Các ngày trong tuần KHÔNG nhận lịch (0=CN, 1=T2, ..., 6=T7)
-  // Ví dụ: [0] = không nhận CN, [0, 6] = không nhận T7 và CN
-  blockedWeekdays: [0] as number[], // Chỉ chặn Chủ nhật
+  // Ngày nhỏ nhất / lớn nhất để hiển thị trên ô chọn ngày
+  minDate: '2026-05-19',
+  maxDate: '2026-05-22',
 
   // Khung giờ cho phép đặt
   timeSlots: [
@@ -25,20 +27,18 @@ export const BOOKING_CONFIG = {
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 export function getMinDate(): string {
-  const d = new Date()
-  d.setDate(d.getDate() + BOOKING_CONFIG.minDaysFromToday)
-  return d.toISOString().split('T')[0]
+  return BOOKING_CONFIG.minDate
 }
 
 export function getMaxDate(): string {
-  const d = new Date()
-  d.setDate(d.getDate() + BOOKING_CONFIG.maxDaysFromToday)
-  return d.toISOString().split('T')[0]
+  return BOOKING_CONFIG.maxDate
 }
 
 export function isDateAllowed(dateStr: string): boolean {
   if (!dateStr) return false
-  const d = new Date(dateStr)
-  const day = d.getDay()
-  return !BOOKING_CONFIG.blockedWeekdays.includes(day)
+  return BOOKING_CONFIG.allowedDates.includes(dateStr)
+}
+
+export function getAllowedDatesText(): string {
+  return 'Chỉ nhận lịch tư vấn trong các ngày 19–22/05/2026'
 }
