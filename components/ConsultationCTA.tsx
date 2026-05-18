@@ -156,7 +156,7 @@ export default function ConsultationCTA({ patientId, patientName, salesStaff }: 
                         marginBottom: 3,
                       }}
                     >
-                      📞 {i === 0 ? 'Chuyên viên hỗ trợ y tế  ' : 'Liên hệ ' + (i + 1)}
+                      📞 {i === 0 ? 'Nhân viên hỗ trợ y tế' : 'Liên hệ ' + (i + 1)}
                     </p>
 
                     <p
@@ -206,7 +206,7 @@ export default function ConsultationCTA({ patientId, patientName, salesStaff }: 
                 }
 
                 return (
-                  
+                  <a
                     key={i}
                     href={phoneHref}
                     style={baseStyle}
@@ -259,14 +259,35 @@ export default function ConsultationCTA({ patientId, patientName, salesStaff }: 
             </button>
 
             {/* Hotline fallback */}
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.50)', marginTop: 16, lineHeight: 1.8 }}>
-              Hoặc liên hệ trực tiếp:{' '}
-              <a href="tel:0902310747" style={{ color: 'rgba(255,255,255,0.82)', fontWeight: 600, textDecoration: 'none' }}>
-                Mr. Phúc Đoàn — 0902 310 747
+            <p
+              style={{
+                fontSize: 13,
+                color: 'rgba(255,255,255,0.50)',
+                marginTop: 16,
+                lineHeight: 1.8,
+              }}
+            >
+              Hotline hỗ trợ:{' '}
+              <a
+                href="tel:0785957488"
+                style={{
+                  color: 'rgba(255,255,255,0.82)',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                Ms. Sương Vũ — 0785 957 488
               </a>
               {' · '}
-              <a href="tel:0785957488" style={{ color: 'rgba(255,255,255,0.82)', fontWeight: 600, textDecoration: 'none' }}>
-                Ms. Sương Vũ — 0785 957 488
+              <a
+                href="tel:0902310747"
+                style={{
+                  color: 'rgba(255,255,255,0.82)',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                Mr. Phúc Đoàn — 0902 310 747
               </a>
             </p>
           </div>
