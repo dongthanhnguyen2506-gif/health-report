@@ -2,17 +2,9 @@
 // Chỉnh file này để thay đổi ngày và giờ cho phép đặt lịch
 
 export const BOOKING_CONFIG = {
-  // Chỉ cho phép khách hàng đặt lịch trong các ngày này
-  allowedDates: [
-    '2026-05-19',
-    '2026-05-20',
-    '2026-05-21',
-    '2026-05-22',
-  ],
-
-  // Ngày nhỏ nhất / lớn nhất để hiển thị trên ô chọn ngày
-  minDate: '2026-05-19',
-  maxDate: '2026-05-22',
+  // Chỉ nhận lịch các ngày Thứ 3 - Thứ 6
+  // JS: 0=CN, 1=T2, 2=T3, 3=T4, 4=T5, 5=T6, 6=T7
+  allowedWeekdays: [2, 3, 4, 5],
 
   // Khung giờ cho phép đặt
   timeSlots: [
@@ -26,19 +18,59 @@ export const BOOKING_CONFIG = {
 }
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
+
+function toDateInputValue(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function parseDateInput(dateStr: string): Date | null {
+  if (!dateStr) return null
+
+  const [year, month, day] = dateStr.split('-').map(Number)
+
+  if (!year || !month || !day) return null
+
+  return new Date(year, month - 1, day)
+}
+
+function getToday(): Date {
+  const d = new Date()
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function getEndOfCurrentMonth(): Date {
+  const today = getToday()
+  return new Date(today.getFullYear(), today.getMonth() + 1, 0)
+}
+
 export function getMinDate(): string {
-  return BOOKING_CONFIG.minDate
+  return toDateInputValue(getToday())
 }
 
 export function getMaxDate(): string {
-  return BOOKING_CONFIG.maxDate
+  return toDateInputValue(getEndOfCurrentMonth())
 }
 
 export function isDateAllowed(dateStr: string): boolean {
-  if (!dateStr) return false
-  return BOOKING_CONFIG.allowedDates.includes(dateStr)
+  const selectedDate = parseDateInput(dateStr)
+  if (!selectedDate) return false
+
+  selectedDate.setHours(0, 0, 0, 0)
+
+  const today = getToday()
+  const endOfMonth = getEndOfCurrentMonth()
+  const weekday = selectedDate.getDay()
+
+  const isWithinRange = selectedDate >= today && selectedDate <= endOfMonth
+  const isAllowedWeekday = BOOKING_CONFIG.allowedWeekdays.includes(weekday)
+
+  return isWithinRange && isAllowedWeekday
 }
 
 export function getAllowedDatesText(): string {
-  return 'Chỉ nhận lịch tư vấn trong các ngày 19–22/05/2026'
+  return 'Chỉ nhận lịch tư vấn từ hôm nay đến cuối tháng, trong các ngày Thứ 3 – Thứ 6.'
 }
