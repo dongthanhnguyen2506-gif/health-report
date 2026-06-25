@@ -37607,7 +37607,8 @@ export const patients: Patient[] = [
     "n_total": 41,
     "n_normal": 41,
     "n_attention": 0
-  }
+  },
+  ...newPatients
 ]
 
 export function getPatient(id: string): Patient | undefined {
