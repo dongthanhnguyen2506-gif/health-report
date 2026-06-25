@@ -35,7 +35,7 @@ export default function HomePage() {
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             {[
               { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 70 },
-              { src: '/logo-shb.png',  alt: 'SHB',           w: 52 },
+      
             ].map(lg => (
               <div key={lg.alt} style={{
                 background: 'white', borderRadius: 9, height: 38, minWidth: 80,
