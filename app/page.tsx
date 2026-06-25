@@ -31,16 +31,15 @@ export default function HomePage() {
           maxWidth: 1120, margin: '0 auto', padding: '0 1rem',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           height: 56,
-        }}>
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            {[
-              { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 70 },
-               { src: '/logo-vib.png', alt: 'VIB', w: 70 },
-              <div key={lg.alt} style={{
-                background: 'white', borderRadius: 9, height: 38, minWidth: 80,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                padding: '4px 10px', boxShadow: '0 3px 10px rgba(0,0,0,0.18)',
-              }}>
+        {[
+  { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 70 },
+  { src: '/logo-vib.png', alt: 'VIB', w: 70 },
+].map((lg) => (
+  <div key={lg.alt} style={{
+    background: 'white', borderRadius: 9, height: 38, minWidth: 80,
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    padding: '4px 10px', boxShadow: '0 3px 10px rgba(0,0,0,0.18)',
+  }}>
                 <Image src={lg.src} alt={lg.alt} width={lg.w} height={20} style={{ objectFit: 'contain' }} />
               </div>
             ))}
