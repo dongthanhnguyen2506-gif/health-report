@@ -1,4 +1,5 @@
 import type { Patient } from './types'
+import { newPatients } from './patients-new'
 
 export const patients: Patient[] = [
   {
