@@ -100,8 +100,9 @@ const originalUrl =
   )
 
   const LOGOS = [
-    { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 72, href: 'https://evergroup.jp/' as string | null },
-  ]
+  { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 72, href: 'https://evergroup.jp/' as string | null },
+  { src: '/logo-vib.png', alt: 'VIB', w: 72, href: null as string | null },
+]
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--page-bg)', overflowX: 'hidden' }}>
