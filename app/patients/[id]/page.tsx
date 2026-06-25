@@ -101,7 +101,6 @@ const originalUrl =
 
   const LOGOS = [
     { src: '/logo-ever.png', alt: 'Ever Việt Nam', w: 72, href: 'https://evergroup.jp/' as string | null },
-    { src: '/logo-shb.png',  alt: 'SHB',           w: 54, href: null },
   ]
 
   return (
@@ -745,7 +744,7 @@ const originalUrl =
 />
 
         <div style={{ textAlign: 'center', padding: '8px 0', fontSize: 11, color: 'var(--gray-400)', lineHeight: 1.8 }}>
-          <p>Ever Việt Nam × SHB · Phiếu này không phải chẩn đoán y khoa chính thức</p>
+          <p>Ever Việt Nam x VIB · Phiếu này không phải chẩn đoán y khoa chính thức</p>
           <p>
             Mã phiếu: {p.id} · {p.sample_date}
           </p>
